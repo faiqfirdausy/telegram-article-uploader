@@ -1,3 +1,4 @@
+
 import os
 import io
 import base64
@@ -176,7 +177,7 @@ def buat_kolase(user_id):
     return output_path
 
 def upload_image_to_joomla(image_path, api_token):
-    url = "https://jatim.kemenkum.go.id/api/index.php/v1/media/files"
+    url = "https://yourjoomlapage.com/api/index.php/v1/media/files"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"foto_{timestamp}.jpg"
     upload_path = f"local-images:/gambarpost2/{filename}"
@@ -194,14 +195,14 @@ def upload_image_to_joomla(image_path, api_token):
     else: raise Exception(f"Gagal upload gambar: {response.json()}")
 
 def post_article_to_joomla(title, intro_html, api_token):
-    url = "https://jatim.kemenkum.go.id/api/index.php/v1/content/articles"
+    url = "https://yourjoomlapage.com/api/index.php/v1/content/articles"
     alias = title.lower().replace(" ", "-") + "-" + datetime.now().strftime("%H%M%S")
     payload = {"title": title, "alias": alias, "catid": 19, "state": 1, "language": "*", "introtext": intro_html}
     headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code in [200, 201]:
         alias = response.json()["data"]["attributes"]["alias"]
-        return f"https://jatim.kemenkum.go.id/berita-utama/{alias}"
+        return f"https://yourjoomlapage.com/yourcategory/{alias}"
     else: raise Exception(f"Gagal buat artikel: {response.text}")
 
 # === Setup Twitter ===
